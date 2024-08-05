@@ -1,7 +1,6 @@
 use diesel::{Queryable, Selectable, Insertable};
-use serde::Deserialize;
-
-
+use serde::{Deserialize, Serialize};
+use crate::schema::users;
 #[derive(Queryable, Selectable)]
 #[diesel(table_name = users)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
@@ -11,15 +10,16 @@ pub struct User {
     pub lastname: String,
     pub username: String,
     pub email: String,
-    pub groups: Vec<i32>,
+    pub password: String,
+    pub groups: Option<Vec<Option<i32>>>,
 }
 
-#[derive(Insertable)]
+#[derive(Insertable, Selectable, Queryable, Serialize, Deserialize)]
 #[diesel(table_name = users)]
 pub struct NewUser {
-    pub id: i32,
     pub firstname: String,
     pub lastname: String,
     pub username: String,
     pub email: String,
+    pub password: String,
 }

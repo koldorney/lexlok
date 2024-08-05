@@ -20,7 +20,7 @@ pub enum PoolError {
 }
 
 pub fn init_pool () -> Result<Pool, PoolError> {
-    dotenv().map_err(PoolError::Env)?;
+    dotenv().ok();
     let uri = env::var("POSTGRES_URI").map_err(|_| PoolError::DBurl)?;
     let manager = Manager::new(uri, Runtime::Tokio1);
     let pool = Pool::builder(manager).build().unwrap();
